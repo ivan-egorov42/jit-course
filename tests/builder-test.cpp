@@ -1,6 +1,9 @@
-#include "ir/cfg.h"
+#include <gtest/gtest.h>
+
 #include "ir/builder.h"
+#include "ir/cfg.h"
 #include "ir/instruction.h"
+#include "ir/basic-block.h"
 
 /**
  *   Source Code:
@@ -32,7 +35,7 @@
  *           6.s32 ret v1
  */
 
-int main()
+TEST(IR_BUILDER, Factorial)
 {
     auto *cfg = new builder::CFG {};
     builder::Builder irbuilder(cfg);
@@ -86,5 +89,13 @@ int main()
     bb2->add_pred(bb1);
     bb3->add_pred(bb1);
 
-    return 0;
+    cfg->add_block(bb0);
+    cfg->add_block(bb1);
+    cfg->add_block(bb2);
+    cfg->add_block(bb3);
+
+    int* tmp = nullptr;
+    *tmp;
+
+    // return 0;
 }

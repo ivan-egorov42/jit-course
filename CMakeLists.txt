@@ -8,17 +8,22 @@ set(SRC_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_compile_options(-std=c++17 -Wall -Wextra)#-Werror)
 
-#add_subdirectory(tests)
+add_subdirectory(tests)
+# add_executable(MyProgram main.cpp)
 
 add_library(jit_compiler STATIC
-    # ir/basic_block.cpp
-    # ir/instruction.cpp
-    main.cpp
+    ir/basic-block.cpp
+    ir/instruction.cpp
+    ir/builder.cpp
 )
 
 target_include_directories(jit_compiler
     PUBLIC ${SRC_ROOT_DIR}
 )
+
+# target_link_libraries(MyProgram
+#     PUBLIC jit_compiler
+# )
 
 function (filter_items aItems aRegEx)
     # For each item in our list
