@@ -10,16 +10,17 @@ namespace builder {
 
 class RPO {
 public:
-    RPO(CFG *cfg) : cfg(cfg) {}
+    RPO(CFG *cfg) : cfg(cfg), n(cfg->size()) {}
     void run();
-    void calculate(BasicBlock *bb, size_t n);
-    std::vector<size_t> get_order()
+    void calculate(BasicBlock *bb);
+    std::vector<size_t>& get_order()
     {
         return rpo_order;
     }
 
 private:
     CFG *cfg;
+    size_t n;
     std::vector<size_t> rpo_order;
     std::vector<bool> visited;
 };
