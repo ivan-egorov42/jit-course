@@ -4,6 +4,8 @@
 #include "ir/basic-block.h"
 #include "ir/builder.h"
 
+#include <set>
+
 TEST(DOMTREE_tests, test1)
 {
     auto *cfg = new builder::CFG {};
@@ -31,11 +33,27 @@ TEST(DOMTREE_tests, test1)
 
     bb6->set_true_succ(bb3);
 
-    builder::DominatorTree domTree(cfg);
+    builder::DominatorTree dom_tree(cfg);
 
-    domTree.calculate_dom_tree(bb0);
+    dom_tree.calculate_dom_tree(bb0);
 
-    domTree.print_dominators();
+    dom_tree.print_dominators();
+
+    std::set<size_t> expected_doms_bb0 = {bb0->get_id()};
+    std::set<size_t> expected_doms_bb1 = {bb0->get_id(), bb1->get_id()};
+    std::set<size_t> expected_doms_bb2 = {bb0->get_id(), bb1->get_id(), bb2->get_id()};
+    std::set<size_t> expected_doms_bb3 = {bb0->get_id(), bb1->get_id(), bb3->get_id()};
+    std::set<size_t> expected_doms_bb4 = {bb0->get_id(), bb1->get_id(), bb4->get_id(), bb5->get_id()};
+    std::set<size_t> expected_doms_bb5 = {bb0->get_id(), bb1->get_id(), bb5->get_id()};
+    std::set<size_t> expected_doms_bb6 = {bb0->get_id(), bb1->get_id(), bb5->get_id(), bb6->get_id()};
+
+    EXPECT_EQ(expected_doms_bb0, dom_tree.get_dominators_for(bb0->get_id()));
+    EXPECT_EQ(expected_doms_bb1, dom_tree.get_dominators_for(bb1->get_id()));
+    EXPECT_EQ(expected_doms_bb2, dom_tree.get_dominators_for(bb2->get_id()));
+    EXPECT_EQ(expected_doms_bb3, dom_tree.get_dominators_for(bb3->get_id()));
+    EXPECT_EQ(expected_doms_bb4, dom_tree.get_dominators_for(bb4->get_id()));
+    EXPECT_EQ(expected_doms_bb5, dom_tree.get_dominators_for(bb5->get_id()));
+    EXPECT_EQ(expected_doms_bb6, dom_tree.get_dominators_for(bb6->get_id()));
 }
 
 TEST(DOMTREE_tests, test2)
@@ -77,13 +95,11 @@ TEST(DOMTREE_tests, test2)
 
     bb8->set_true_succ(bb10);
 
-    builder::DominatorTree domTree(cfg);
+    builder::DominatorTree dom_tree(cfg);
 
-    domTree.calculate_dom_tree(bb0);
+    dom_tree.calculate_dom_tree(bb0);
 
-    domTree.print_dominators();
-
-    // std::vector<size_t> expected_doms_ = {bb0->get_id(), R->get_id(), A->get_id()
+    dom_tree.print_dominators();
 }
 
 TEST(DOMTREE_tests, test3)
@@ -125,9 +141,9 @@ TEST(DOMTREE_tests, test3)
 
     bb8->set_true_succ(bb10);
 
-    builder::DominatorTree domTree(cfg);
+    builder::DominatorTree dom_tree(cfg);
 
-    domTree.calculate_dom_tree(bb0);
+    dom_tree.calculate_dom_tree(bb0);
 
-    domTree.print_dominators();
+    dom_tree.print_dominators();
 }

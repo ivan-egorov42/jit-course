@@ -19,7 +19,7 @@ public:
         init_graph();
     }
 
-    void add_edge(int u, int v)
+    void add_edge(size_t u, size_t v)
     {
         graph[u].push_back(v);
     }
@@ -44,7 +44,7 @@ public:
             if (i == entry->get_id()) {
                 dominators[i].insert(i);
             } else {
-                for (int j = 0; j < n; ++j) {
+                for (size_t j = 0; j < n; ++j) {
                     dominators[i].insert(j);
                 }
             }
@@ -58,15 +58,15 @@ public:
                 if (i == entry->get_id())
                     continue;
 
-                std::set<int> newDominators;
+                std::set<size_t> newDominators;
                 bool first = true;
 
-                for (int pred : get_predecessors(i)) {
+                for (size_t pred : get_predecessors(i)) {
                     if (first) {
                         newDominators = dominators[pred];
                         first = false;
                     } else {
-                        std::set<int> temp;
+                        std::set<size_t> temp;
                         std::set_intersection(newDominators.begin(), newDominators.end(), dominators[pred].begin(),
                                               dominators[pred].end(), inserter(temp, temp.begin()));
                         newDominators = temp;
@@ -93,11 +93,26 @@ public:
         return id != cfg->get_entry()->get_id() ? *(++dominators[id].rbegin()) : -1;
     }
 
+    std::vector<std::set<size_t>> &get_dominators()
+    {
+        return dominators;
+    }
+
+    std::set<size_t> &get_dominators_for(BasicBlock *bb)
+    {
+        return dominators[bb->get_id()];
+    }
+
+    std::set<size_t> &get_dominators_for(size_t id)
+    {
+        return dominators[id];
+    }
+
     void print_dominators() const
     {
         for (size_t i = 0; i < n; ++i) {
             std::cout << "Node " << i << " is dominated by: ";
-            for (int dom : dominators[i]) {
+            for (size_t dom : dominators[i]) {
                 std::cout << dom << " ";
             }
             std::cout << std::endl;
@@ -107,14 +122,14 @@ public:
 private:
     CFG *cfg;
     size_t n;
-    std::vector<std::vector<int>> graph;
-    std::vector<std::set<int>> dominators;
+    std::vector<std::vector<size_t>> graph;
+    std::vector<std::set<size_t>> dominators;
 
-    std::vector<int> get_predecessors(int node) const
+    std::vector<size_t> get_predecessors(size_t node) const
     {
-        std::vector<int> predecessors;
+        std::vector<size_t> predecessors;
         for (size_t i = 0; i < n; ++i) {
-            for (int neighbor : graph[i]) {
+            for (size_t neighbor : graph[i]) {
                 if (neighbor == node) {
                     predecessors.push_back(i);
                 }
