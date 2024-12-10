@@ -82,6 +82,8 @@ TEST(DOMTREE_tests, test2)
     domTree.calculate_dom_tree(bb0);
 
     domTree.print_dominators();
+
+    // std::vector<size_t> expected_doms_ = {bb0->get_id(), R->get_id(), A->get_id()
 }
 
 TEST(DOMTREE_tests, test3)

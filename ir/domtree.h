@@ -85,12 +85,12 @@ public:
 
     size_t get_imm_dom(BasicBlock *bb)
     {
-        return *(++dominators[bb->get_id()].rbegin());
+        return bb != cfg->get_entry() ? *(++dominators[bb->get_id()].rbegin()) : -1;
     }
 
     size_t get_imm_dom(size_t id)
     {
-        return *(++dominators[id].rbegin());
+        return id != cfg->get_entry()->get_id() ? *(++dominators[id].rbegin()) : -1;
     }
 
     void print_dominators() const
