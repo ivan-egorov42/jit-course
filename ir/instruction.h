@@ -205,6 +205,8 @@ public:
     {
     }
 
+    CondCode get_cond_code() { return cond_code; }
+
 private:
     CondCode cond_code;
 };

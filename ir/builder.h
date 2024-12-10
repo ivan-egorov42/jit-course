@@ -19,8 +19,13 @@ class CFG;
 class Builder {
 public:
     Builder(CFG *cfg) : cfg(cfg) {};
+
+    CFG* get_cfg() {
+      return cfg;
+    }
     BasicBlock *make_entry_bb();
-    BasicBlock *make_empty_bb(BasicBlock *after);
+    BasicBlock *make_empty_bb();
+    BasicBlock *make_empty_bb_after(BasicBlock *after, EdgeFlag flag);
     BasicBlock *make_bb(InstructionSeq *seq, BasicBlock *after);  // TODO:finish
 
     IntValue *build_int_cst(int value);

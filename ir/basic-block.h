@@ -38,11 +38,11 @@ public:
     {
         return id;
     }
-    const BasicBlock *get_true_succ() const
+    BasicBlock *get_true_succ() const
     {
         return true_succ;
     }
-    const BasicBlock *get_false_succ() const
+    BasicBlock *get_false_succ() const
     {
         return false_succ;
     }
@@ -64,6 +64,9 @@ public:
     {
         preds.push_back(pred);
     }
+    BBs get_preds() {
+      return preds;
+    }
 
     Instruction *add_inst_back(Instruction *inst);
     PhiInst *add_phi(PhiInst *phi);
@@ -75,6 +78,16 @@ public:
     const Instruction *get_last_inst()
     {
         return last_inst;
+    }
+
+    const PhiInst *get_first_phi()
+    {
+        return first_phi;
+    }
+
+    const PhiInst *get_last_phi()
+    {
+        return last_phi;
     }
 
 private:

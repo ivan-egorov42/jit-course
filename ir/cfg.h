@@ -25,11 +25,22 @@ public:
         return current_inst_id++;
     }
 
+    size_t size() {
+      return blocks.size();
+    }
+
     BasicBlock *make_entry()
     {
         assert(!entry_done);
-        return new BasicBlock(true, new_bb_id(), nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, this);
+        BasicBlock *entry_bb = new BasicBlock(true, new_bb_id(), nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, this);
         entry_done = true;
+        entry = entry_bb;
+        add_block(entry);
+        return entry;
+    }
+
+    BasicBlock* get_entry() {
+      return entry;
     }
 
     Edge *make_edge(BasicBlock *from, BasicBlock *to, EdgeFlag flag)
@@ -38,6 +49,7 @@ public:
     }
 
     void add_block(BasicBlock *bb) {
+      assert(entry_done);
       blocks.push_back(bb);
       blocks_num++;
     }
@@ -49,6 +61,7 @@ private:
     size_t blocks_num;
 
     BBs blocks;
+    BasicBlock* entry;
 };
 }  // namespace builder
 #endif  // CFG_H

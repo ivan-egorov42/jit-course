@@ -75,11 +75,29 @@ BasicBlock *Builder::make_entry_bb()
     return cfg->make_entry();
 }
 
-BasicBlock *Builder::make_empty_bb(BasicBlock *after)
+BasicBlock *Builder::make_empty_bb()
+{
+    BasicBlock *bb = new BasicBlock(false, cfg->new_bb_id(), nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, cfg);
+    cfg->add_block(bb);
+
+    return bb;
+}
+
+BasicBlock *Builder::make_empty_bb_after(BasicBlock *after, EdgeFlag flag)
 {
     BasicBlock *bb = new BasicBlock(false, cfg->new_bb_id(), nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, cfg);
 
+    cfg->add_block(bb);
     bb->add_pred(after);
+
+    switch (flag) {
+        case EdgeFlag::FALLTHROUGH_EDGE:
+        after->set_fallthru_succ(bb);
+        case EdgeFlag::TRUE_EDGE:
+        after->set_true_succ(bb);
+        case EdgeFlag::FALSE_EDGE:
+        after->set_false_succ(bb);
+    }
 
     return bb;
 }

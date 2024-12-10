@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SRC_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_compile_options(-std=c++17 -Wall -Wextra)#-Werror)
+add_compile_options(-std=c++17 -Wall -Wextra)#-Wreturn-type)#-Werror)
 
 add_subdirectory(tests)
 # add_executable(MyProgram main.cpp)
@@ -15,6 +15,7 @@ add_library(jit_compiler STATIC
     ir/basic-block.cpp
     ir/instruction.cpp
     ir/builder.cpp
+    ir/rpo.cpp
 )
 
 target_include_directories(jit_compiler
