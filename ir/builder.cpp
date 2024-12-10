@@ -7,27 +7,38 @@
 namespace builder {
 IntValue *Builder::build_int_cst(int value)
 {
-    return new IntValue(Type::INT_CST, value, nullptr);
+    return new IntValue(Type::INT_CST, RetType::s32, value, nullptr);
 }
 
 IntParam *Builder::build_int_param(int param)
 {
-    return new IntParam(Type::INT_PARAM, param, nullptr);
+    return new IntParam(Type::INT_PARAM, RetType::s32, param, nullptr);
 }
 
 Instruction *Builder::build_instruction(Opcode opcode, Instruction *op1)
 {
     Instruction *inst =
-        new Instruction(Type::INST, cfg->new_inst_id(), nullptr, nullptr, opcode, op1->get_ret_type(), nullptr);
+        new Instruction(Type::INST, cfg->new_inst_id(), nullptr, nullptr, opcode, op1->get_ret_type(), nullptr, 1);
 
     inst->add_input(op1, 0);
 
     return inst;
 }
 
+Instruction *Builder::build_instruction(Opcode opcode, Instruction *op1, Instruction *op2)
+{
+    Instruction *inst =
+        new Instruction(Type::INST, cfg->new_inst_id(), nullptr, nullptr, opcode, op1->get_ret_type(), nullptr, 2);
+
+    inst->add_input(op1, 0);
+    inst->add_input(op2, 1);
+
+    return inst;
+}
+
 PhiInst *Builder::build_phi()
 {
-    return new PhiInst(Type::INST, cfg->new_inst_id(), nullptr, nullptr, Opcode::PHI, RetType::no_type, nullptr);
+    return new PhiInst(Type::INST, cfg->new_inst_id(), nullptr, nullptr, Opcode::PHI, RetType::no_type, nullptr, 0);
 }
 
 AssignInst *Builder::build_assign(Opcode opcode, Instruction *op1, Instruction *op2)
@@ -36,7 +47,7 @@ AssignInst *Builder::build_assign(Opcode opcode, Instruction *op1, Instruction *
         return nullptr;
 
     AssignInst *inst =
-        new AssignInst(Type::INST, cfg->new_inst_id(), nullptr, nullptr, opcode, op1->get_ret_type(), nullptr);
+        new AssignInst(Type::INST, cfg->new_inst_id(), nullptr, nullptr, opcode, op1->get_ret_type(), nullptr, 2);
 
     inst->add_input(op1, 0);
     inst->add_input(op2, 1);
@@ -47,9 +58,9 @@ AssignInst *Builder::build_assign(Opcode opcode, Instruction *op1, Instruction *
 AssignInst *Builder::build_assign(Opcode opcode, Instruction *op1, int op2)
 {
     AssignInst *inst =
-        new AssignInst(Type::INST, cfg->new_inst_id(), nullptr, nullptr, opcode, op1->get_ret_type(), nullptr);
+        new AssignInst(Type::INST, cfg->new_inst_id(), nullptr, nullptr, opcode, op1->get_ret_type(), nullptr, 2);
 
-    IntValue *cst = new IntValue(Type::INT_CST, op2, nullptr);
+    IntValue *cst = new IntValue(Type::INT_CST, RetType::s32, op2, nullptr);
 
     inst->add_input(op1, 0);
     inst->add_input(cst, 1);
@@ -60,9 +71,9 @@ AssignInst *Builder::build_assign(Opcode opcode, Instruction *op1, int op2)
 CondInst *Builder::build_cond(CondCode cond_code, Instruction *op1, int op2)
 {
     CondInst *inst = new CondInst(Type::INST, cfg->new_inst_id(), nullptr, nullptr, Opcode::CMP, RetType::bool_t,
-                                  nullptr, cond_code);
+                                  nullptr, cond_code, 2);
 
-    IntValue *cst = new IntValue(Type::INT_CST, op2, nullptr);
+    IntValue *cst = new IntValue(Type::INT_CST, RetType::s32, op2, nullptr);
 
     inst->add_input(op1, 0);
     inst->add_input(cst, 1);

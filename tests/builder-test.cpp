@@ -51,9 +51,11 @@ TEST(IR_BUILDER, Factorial)
 
     auto *v1 = irbuilder.build_phi();
     v1->add_arg(bb0->get_id(), cst1);
+    v1->set_ret_type(cst1->get_ret_type());
 
     auto *v2 = irbuilder.build_phi();
     v2->add_arg(bb0->get_id(), cst2);
+    v2->set_ret_type(cst2->get_ret_type());
 
     auto *v3 = irbuilder.build_cond(builder::CondCode::LE_EXPR, v2, 228);
 
@@ -94,6 +96,8 @@ TEST(IR_BUILDER, Factorial)
     cfg->add_block(bb2);
     cfg->add_block(bb3);
 
+    ASSERT_EQ(v1->get_ret_type(), builder::RetType::s32);
+    ASSERT_EQ(v5->get_ret_type(), builder::RetType::s32);
     ASSERT_EQ(v1->get_opcode(), builder::Opcode::PHI);
     ASSERT_EQ(v2->get_opcode(), builder::Opcode::PHI);
     ASSERT_EQ(v1->get_arg(bb0->get_id()), cst1);

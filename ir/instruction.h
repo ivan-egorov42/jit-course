@@ -15,21 +15,41 @@ class BasicBlock;
 class InstructionOrValue {
 public:
     InstructionOrValue() = default;
-    InstructionOrValue(Type type) : type(type) {}
+    InstructionOrValue(Type type, RetType ret_type) : type(type), ret_type(ret_type) {}
+
     Type get_type()
     {
         return type;
+    }
+
+    RetType get_ret_type() const
+    {
+        return ret_type;
+    }
+
+    void set_type(Type t)
+    {
+        type = t;
+    }
+
+    void set_ret_type(RetType t)
+    {
+        ret_type = t;
     }
 
     virtual ~InstructionOrValue() {}
 
 private:
     Type type;
+    RetType ret_type;
 };
 
 class IntValue : public InstructionOrValue {
 public:
-    IntValue(Type type, int value, BasicBlock *bb) : InstructionOrValue(type), value(value), bb(bb) {}
+    IntValue(Type type, RetType ret_type, int value, BasicBlock *bb)
+        : InstructionOrValue(type, ret_type), value(value), bb(bb)
+    {
+    }
 
     int get_value()
     {
@@ -48,7 +68,10 @@ private:
 
 class IntParam : public InstructionOrValue {
 public:
-    IntParam(Type type, int param, BasicBlock *bb) : InstructionOrValue(type), param(param), bb(bb) {}
+    IntParam(Type type, RetType ret_type, int param, BasicBlock *bb)
+        : InstructionOrValue(type, ret_type), param(param), bb(bb)
+    {
+    }
 
     int get_param()
     {
@@ -72,10 +95,10 @@ public:
 
     Instruction() = default;
     Instruction(Type type, size_t id, Instruction *prev, Instruction *next, Opcode opcode, RetType ret_type,
-                BasicBlock *bb)
-        : InstructionOrValue(type), id(id), prev(prev), next(next), opcode(opcode), ret_type(ret_type), bb(bb)
+                BasicBlock *bb, int num_ops)
+        : InstructionOrValue(type, ret_type), id(id), prev(prev), next(next), opcode(opcode), bb(bb), num_ops(num_ops)
     {
-        inputs.resize(2);
+        inputs.resize(num_ops);
     };
     virtual ~Instruction() = default;
 
@@ -90,10 +113,6 @@ public:
     Opcode get_opcode() const
     {
         return opcode;
-    }
-    RetType get_ret_type() const
-    {
-        return ret_type;
     }
 
     const Inputs &get_inputs() const
@@ -155,6 +174,8 @@ private:
 
     Inputs inputs;
     Users users;
+
+    int num_ops;
 };
 
 class InstructionSeq {
@@ -191,8 +212,8 @@ private:
 class AssignInst : public Instruction {
 public:
     AssignInst(Type type, size_t id, Instruction *prev, Instruction *next, Opcode opcode, RetType ret_type,
-               BasicBlock *bb)
-        : Instruction(type, id, prev, next, opcode, ret_type, bb)
+               BasicBlock *bb, int num_ops)
+        : Instruction(type, id, prev, next, opcode, ret_type, bb, num_ops)
     {
     }
 };
@@ -200,8 +221,8 @@ public:
 class CondInst : public Instruction {
 public:
     CondInst(Type type, size_t id, Instruction *prev, Instruction *next, Opcode opcode, RetType ret_type,
-             BasicBlock *bb, CondCode cond_code)
-        : Instruction(type, id, prev, next, opcode, ret_type, bb), cond_code(cond_code)
+             BasicBlock *bb, CondCode cond_code, int num_ops)
+        : Instruction(type, id, prev, next, opcode, ret_type, bb, num_ops), cond_code(cond_code)
     {
     }
 
@@ -216,8 +237,9 @@ private:
 
 class PhiInst : public Instruction {
 public:
-    PhiInst(Type type, size_t id, Instruction *prev, Instruction *next, Opcode opcode, RetType ret_type, BasicBlock *bb)
-        : Instruction(type, id, prev, next, opcode, ret_type, bb)
+    PhiInst(Type type, size_t id, Instruction *prev, Instruction *next, Opcode opcode, RetType ret_type, BasicBlock *bb,
+            int num_ops)
+        : Instruction(type, id, prev, next, opcode, ret_type, bb, num_ops)
     {
     }
 

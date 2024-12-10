@@ -13,7 +13,7 @@ public:
     RPO(CFG *cfg) : cfg(cfg), n(cfg->size()) {}
     void run();
     void calculate(BasicBlock *bb);
-    std::vector<size_t>& get_order()
+    std::vector<size_t> &get_order()
     {
         return rpo_order;
     }
