@@ -11,16 +11,19 @@ namespace builder {
 
 class DominatorTree {
 public:
-    DominatorTree(CFG* cfg) : cfg(cfg), n(cfg->size()) {
+    DominatorTree(CFG *cfg) : cfg(cfg), n(cfg->size())
+    {
         graph.resize(n);
         dominators.resize(n);
     }
 
-    void add_edge(int u, int v) {
+    void add_edge(int u, int v)
+    {
         graph[u].push_back(v);
     }
 
-    void calculate_dom_tree(BasicBlock* entry) {
+    void calculate_dom_tree(BasicBlock *entry)
+    {
         for (int i = 0; i < n; ++i) {
             if (i == entry->get_id()) {
                 dominators[i].insert(i);
@@ -36,7 +39,8 @@ public:
             changed = false;
 
             for (int i = 0; i < n; ++i) {
-                if (i == entry->get_id()) continue;
+                if (i == entry->get_id())
+                    continue;
 
                 std::set<int> newDominators;
                 bool first = true;
@@ -47,11 +51,8 @@ public:
                         first = false;
                     } else {
                         std::set<int> temp;
-                        std::set_intersection(
-                            newDominators.begin(), newDominators.end(),
-                            dominators[pred].begin(), dominators[pred].end(),
-                            inserter(temp, temp.begin())
-                        );
+                        std::set_intersection(newDominators.begin(), newDominators.end(), dominators[pred].begin(),
+                                              dominators[pred].end(), inserter(temp, temp.begin()));
                         newDominators = temp;
                     }
                 }
@@ -66,7 +67,8 @@ public:
         }
     }
 
-    void printDominators() const {
+    void printDominators() const
+    {
         for (int i = 0; i < n; ++i) {
             cout << "Node " << i << " is dominated by: ";
             for (int dom : dominators[i]) {
@@ -77,12 +79,13 @@ public:
     }
 
 private:
-    CFG* cfg;
+    CFG *cfg;
     int n;
     std::vector<std::vector<int>> graph;
     std::vector<std::set<int>> dominators;
 
-    std::vector<int> get_predecessors(int node) const {
+    std::vector<int> get_predecessors(int node) const
+    {
         std::vector<int> predecessors;
         for (int i = 0; i < n; ++i) {
             for (int neighbor : graph[i]) {

@@ -64,8 +64,9 @@ public:
     {
         preds.push_back(pred);
     }
-    BBs get_preds() {
-      return preds;
+    BBs get_preds()
+    {
+        return preds;
     }
 
     Instruction *add_inst_back(Instruction *inst);

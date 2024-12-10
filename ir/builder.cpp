@@ -92,11 +92,11 @@ BasicBlock *Builder::make_empty_bb_after(BasicBlock *after, EdgeFlag flag)
 
     switch (flag) {
         case EdgeFlag::FALLTHROUGH_EDGE:
-        after->set_fallthru_succ(bb);
+            after->set_fallthru_succ(bb);
         case EdgeFlag::TRUE_EDGE:
-        after->set_true_succ(bb);
+            after->set_true_succ(bb);
         case EdgeFlag::FALSE_EDGE:
-        after->set_false_succ(bb);
+            after->set_false_succ(bb);
     }
 
     return bb;

@@ -20,8 +20,9 @@ class Builder {
 public:
     Builder(CFG *cfg) : cfg(cfg) {};
 
-    CFG* get_cfg() {
-      return cfg;
+    CFG *get_cfg()
+    {
+        return cfg;
     }
     BasicBlock *make_entry_bb();
     BasicBlock *make_empty_bb();
