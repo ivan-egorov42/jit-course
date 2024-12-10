@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <cassert>
+#include <unordered_map>
 
 #include "ir/common.h"
 #include "ir/basic-block.h"
@@ -54,8 +55,12 @@ public:
     void add_block(BasicBlock *bb)
     {
         assert(entry_done);
-        blocks.push_back(bb);
+        blocks[bb->get_id()] = bb;
         blocks_num++;
+    }
+
+    std::unordered_map<size_t, BasicBlock *>& get_blocks() {
+      return blocks;
     }
 
 private:
@@ -64,7 +69,8 @@ private:
     bool entry_done;
     size_t blocks_num;
 
-    BBs blocks;
+    // BBs blocks;
+    std::unordered_map<size_t, BasicBlock *> blocks;
     BasicBlock *entry;
 };
 }  // namespace builder

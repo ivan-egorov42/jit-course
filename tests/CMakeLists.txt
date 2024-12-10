@@ -5,6 +5,7 @@ find_package(GTest REQUIRED)
 add_executable(compiler_gtests
    builder-test.cpp
    rpo-test.cpp
+   domtree-test.cpp
 )
 
 target_link_libraries(compiler_gtests
