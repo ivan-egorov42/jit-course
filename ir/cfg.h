@@ -59,8 +59,9 @@ public:
         blocks_num++;
     }
 
-    std::unordered_map<size_t, BasicBlock *>& get_blocks() {
-      return blocks;
+    std::unordered_map<size_t, BasicBlock *> &get_blocks()
+    {
+        return blocks;
     }
 
 private:
