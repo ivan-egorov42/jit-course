@@ -55,10 +55,10 @@ TEST(RPOTest, RPO1)
 
     std::vector<size_t> rpo_order = rpo.get_order();
 
-    std::vector<size_t> expected_rpo_order = {B->get_id(), R->get_id(), A->get_id(), I->get_id(), L->get_id(),
-                                              W->get_id(), Q->get_id(), G->get_id(), E->get_id(), O->get_id(),
-                                              K->get_id(), X->get_id(), V->get_id(), T->get_id(), H->get_id(),
-                                              F->get_id(), D->get_id(), C->get_id()};
+    std::vector<size_t> expected_rpo_order = {A->get_id(), B->get_id(), C->get_id(), R->get_id(), D->get_id(),
+                                              E->get_id(), L->get_id(), I->get_id(), F->get_id(), G->get_id(),
+                                              Q->get_id(), W->get_id(), H->get_id(), O->get_id(), T->get_id(),
+                                              V->get_id(), K->get_id(), X->get_id()};
 
     EXPECT_EQ(rpo_order.size(), expected_rpo_order.size());
 
