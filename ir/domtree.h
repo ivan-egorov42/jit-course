@@ -83,7 +83,17 @@ public:
         }
     }
 
-    void printDominators() const
+    size_t get_imm_dom(BasicBlock *bb)
+    {
+        return *(++dominators[bb->get_id()].rbegin());
+    }
+
+    size_t get_imm_dom(size_t id)
+    {
+        return *(++dominators[id].rbegin());
+    }
+
+    void print_dominators() const
     {
         for (size_t i = 0; i < n; ++i) {
             std::cout << "Node " << i << " is dominated by: ";

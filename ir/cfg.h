@@ -64,6 +64,11 @@ public:
         return blocks;
     }
 
+    BasicBlock *get_block(size_t index)
+    {
+        return blocks.find(index) != blocks.end() ? blocks.find(index)->second : nullptr;
+    }
+
 private:
     size_t current_bb_id;
     size_t current_inst_id;

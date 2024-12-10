@@ -35,7 +35,7 @@ TEST(DOMTREE_tests, test1)
 
     domTree.calculate_dom_tree(bb0);
 
-    domTree.printDominators();
+    domTree.print_dominators();
 }
 
 TEST(DOMTREE_tests, test2)
@@ -81,7 +81,7 @@ TEST(DOMTREE_tests, test2)
 
     domTree.calculate_dom_tree(bb0);
 
-    domTree.printDominators();
+    domTree.print_dominators();
 }
 
 TEST(DOMTREE_tests, test3)
@@ -127,5 +127,5 @@ TEST(DOMTREE_tests, test3)
 
     domTree.calculate_dom_tree(bb0);
 
-    domTree.printDominators();
+    domTree.print_dominators();
 }
