@@ -1,5 +1,1 @@
-mkdir build
-
-cd build
-
-cmake ../
+JIT and AOT course MIPT
