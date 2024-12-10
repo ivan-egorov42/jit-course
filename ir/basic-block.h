@@ -71,6 +71,7 @@ public:
 
     Instruction *add_inst_back(Instruction *inst);
     PhiInst *add_phi(PhiInst *phi);
+    Instruction *add_inst_after(Instruction *inst, Instruction *after);
 
     const Instruction *get_first_inst()
     {

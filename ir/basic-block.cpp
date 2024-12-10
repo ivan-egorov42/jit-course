@@ -28,6 +28,21 @@ Instruction *BasicBlock::add_inst_back(Instruction *inst)
     return last_inst;
 }
 
+Instruction *BasicBlock::add_inst_after(Instruction *inst, Instruction *after)
+{
+    assert(!inst->get_prev() && !inst->get_next());
+    if (after->get_bb() != this)
+        return nullptr;
+
+    inst->set_bb(this);
+    inst->set_prev(after);
+    inst->set_next(after->get_next());
+    after->get_next()->set_prev(inst);
+    after->set_next(inst);
+
+    return inst;
+}
+
 PhiInst *BasicBlock::add_phi(PhiInst *phi)
 {
     assert(!phi->get_prev() && !phi->get_next());
